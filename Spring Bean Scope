@@ -1,0 +1,64 @@
+In Spring, bean scope defines:
+
+How many instances of a bean are created
+How long the bean lives in the container
+🔹 @Scope Annotation
+
+Used to define the scope of a bean.
+
+✔ Can be applied at:
+
+Class level (@Component, @Service, etc.)
+Method level (@Bean)
+✅ Class-Level Example
+@Component
+@Scope("prototype")
+public class Emp {
+}
+✅ Method-Level Example
+@Bean("duster")
+@Scope("prototype")
+public Duster getDuster() {
+    return new Duster();
+}
+🔹 Types of Bean Scopes
+1. 🟢 Singleton (Default)
+Only ONE instance per Spring container
+Shared across the entire application
+Default scope (no need to specify)
+
+
+By default, singleton beans are eagerly initialized at startup
+BUT you can make them lazy using:
+@Lazy
+@Component
+public class MyBean {
+}
+✅ Behavior:
+Emp e1 = context.getBean(Emp.class);
+Emp e2 = context.getBean(Emp.class);
+
+// e1 == e2 → TRUE (same object)
+2. 🔵 Prototype
+New instance every time getBean() is called
+Not shared
+✅ Behavior:
+Emp e1 = context.getBean(Emp.class);
+Emp e2 = context.getBean(Emp.class);
+
+// e1 == e2 → FALSE (different objects)
+⚠️ Important Correction:
+
+✔ Prototype beans are created on demand (lazy by nature)
+✔ BUT Spring does NOT manage full lifecycle:
+
+👉 @PreDestroy is NOT called automatically for prototype beans
+
+🔹 Key Differences 
+| Feature        | Singleton                         | Prototype         |
+| -------------- | --------------------------------- | ----------------- |
+| Instances      | One per container                 | New every request |
+| Default?       | Yes                               |  No               |
+| Initialization | Eager (default) / Lazy (optional) | Lazy              |
+| Shared         | Yes                               | No                |
+| @PreDestroy    | Called                            |  Not called       |
