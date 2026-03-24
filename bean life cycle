@@ -1,0 +1,45 @@
+Whenever Spring manages a bean, it takes care of creating it, injecting dependencies, initializing it, and finally destroying it when the container shuts down.
+ 
+A Spring bean generally goes through these phases:
+Instantiation → Object of bean class is created.
+Dependency Injection → Spring injects required dependencies (via constructor/setter).
+Initialization (post-construct phase) → After dependencies are set, Spring allows us to run custom initialization logic (this is like post construct).
+Ready for Use → Bean can now be used by the application.
+Destruction (Pre-Destroy phase) → Before container shuts down, Spring calls custom cleanup logic (this is like pre destroy).
+
+@PostConstruct (Post-Construct phase)
+•@PostConstruct Called automatically after dependency injection is completed.
+• @PostConstructUsed to perform initialization tasks like setting up resources or validating data.
+• @PostConstruct Executed once after the bean is created.
+•@PostConstruct Equivalent to the init-method phase.
+
+@PreDestroy (Pre-Destroy phase)
+•@PreDestroy  Called just before the bean is destroyed by the container.
+•@PreDestroy  Used to release resources, close connections, or perform cleanup.
+•@PreDestroy  Executed once before the bean is removed.
+•@PreDestroy  Equivalent to the destroy-method phase.
+
+🔹 Additional Note
+• To use @PostConstruct and @PreDestroy, you need to add the Annotation API dependency from the Maven repository in your project.
+
+Old:
+import javax.annotation.PostConstruct;
+
+New (Spring Boot 3+):
+import jakarta.annotation.PostConstruct;
+
+You don’t usually need to manually add dependency in modern Spring Boot — it’s already included.
+
+2. Scope Matters
+For singleton beans → @PreDestroy is called 
+For prototype beans → @PreDestroy is NOT called automatically 
+3. Order of Execution
+
+Initialization order:
+
+Constructor → Dependency Injection → @PostConstruct
+
+Destruction order:
+
+@PreDestroy → Bean destroyed
+
